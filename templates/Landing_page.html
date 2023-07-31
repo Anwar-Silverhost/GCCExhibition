@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>GCC Exhibition</title>
+    <link rel="icon" href="../static/logo/cropped-gcc-site-logo-192x192.png">
+    <!-- base:css -->
+
+    <link rel="stylesheet" href="{% static 'vendors/typicons.font/font/typicons.css' %}">
+    <link rel="stylesheet" href="{% static 'vendors/css/vendor.bundle.base.css' %}">
+    <!-- endinject -->
+    <!-- plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="{% static 'css/vertical-layout-light/style.css' %}">
+    <!-- endinject -->
+    <link rel="shortcut icon" href="../../images/favicon.png" />
+</head>
+
+<body>
+    <div class="container-scroller">
+        <div class="container-fluid page-body-wrapper full-page-wrapper">
+            <div class="content-wrapper d-flex align-items-center text-center error-page">
+                <div class="row flex-grow">
+                    <div class="col-lg-7 mx-auto text-white">
+                        <div class="row align-items-center text-center d-flex flex-row">
+                            <div class="col-12 text-center mt-xl-2">
+
+                                <img src="../static/logo/gcc_logo.png" alt="logo" width="70%">
+                            </div>
+
+                        </div>
+                        <div class="row mt-5">
+                            <div class="col-12 text-center mt-xl-2">
+                                <a class=" btn btn-outline-primary text-dark font-weight-medium" href="{% url 'register' %}">Register</a>
+                            </div>
+                        </div>
+
+                    
+                        <div class="row mt-5">
+                            <div class="col-12 mt-xl-2">
+                                <p class="text-dark font-weight-medium text-center">Copyright &copy;  <a href="https://gccexhibition.com/">GCCExhibition.com</a>  All rights
+                                    reserved.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- content-wrapper ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+    <!-- base:js -->
+    <script src="{% static 'vendors/js/vendor.bundle.base.js' %}"></script>
+    <script src="{% static 'js/off-canvas.js' %}"></script>
+    <script src="{% static 'js/hoverable-collapse.js' %}"></script>
+    <script src="{% static 'js/template.js' %}"></script>
+    <script src="{% static 'js/settings.js' %}"></script>
+    <script src="{% static 'js/todolist.js' %}"></script>
+    <!-- endinject -->
+</body>
+
+</html>

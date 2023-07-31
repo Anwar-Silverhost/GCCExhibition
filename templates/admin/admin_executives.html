@@ -1,0 +1,130 @@
+{% extends 'admin/admin_navbar.html' %}
+{% block content %}
+{% load static %}
+<div class="main-panel">
+    <div class="content-wrapper">
+
+        <div class="row">
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <h4 class="card-title">Executives table</h4>
+                            </div>
+                            <div class="col-auto">
+
+                                <button data-toggle="modal" data-target="#exampleModalCenter"
+                                    class="btn btn-outline-info btn-sm ">Add</button>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="table-responsive pt-3">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Event</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Username</th>
+                                        <th>Password</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {% for exess in exess %}
+                                    <tr>
+                                        <td>{{exess.event}}</td>
+                                        <td>{{exess.fullname}}</td>
+                                        <td>{{exess.email}}</td>
+                                        <td>{{exess.phone}}</td>
+                                        <td>{{exess.username}}</td>
+                                        <td>{{exess.password}}</td>
+                                        <td><a href="{% url 'deleteExecutive' exess.id %}"><button class="btn btn-sm btn-outline-danger">Delete</button></a></td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+
+
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Executive Form</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form class="forms-sample" action="{% url 'saveExecutive' %}" method="post"
+                    enctype="multipart/form-data" autocomplete="off">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Event</label>
+                        <select name="events" id="" class="form-control">
+                            {% for eve in eve %}
+                            <option value="{{eve.id}}">{{eve.event}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" class="form-control form-control-sm" placeholder="Name" name="fullname" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control form-control-sm" placeholder="Email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control form-control-sm" placeholder="Phone Number" name="phone" required>
+                    </div>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success btn-sm w-25">Save</button>
+
+            </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    var mobnav = document.querySelector('.mob_exes');
+    var navLink = document.querySelector('.nav_exec');
+
+    mobnav.classList.add('active-link')
+    navLink.classList.add('active');
+</script>
+
+
+
+
+
+{% endblock %}

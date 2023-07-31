@@ -1,0 +1,412 @@
+{% extends 'admin/admin_navbar.html' %}
+{% block content %}
+{% load static %}
+
+<style>
+    @media screen and (max-width: 767px) {
+        .abc {
+            display: none;
+
+        }
+    }
+</style>
+
+
+<div class="main-panel">
+    <div class="content-wrapper">
+
+        <div class="row">
+
+
+
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Exhibitors Table</h4>
+
+                        <div class="row">
+                            <div class="card-description float-left col">
+                                <div class="input-group">
+                                    <input type="text" class="form-control form-control-sm"
+                                        placeholder="Type to search..." id="fullsearching" aria-label="search"
+                                        aria-describedby="search">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text" id="search">
+                                            <i class="typcn typcn-zoom"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-description float-right col-auto">
+                                <button type="button" class="btn btn-sm btn-outline-info btn-icon-text"
+                                    data-toggle="modal" data-target="#exampleModalCenter">
+                                    <i class="typcn typcn-plus btn-icon-prepend"></i>
+
+                                    <this class="abc"> Add Exhibitor</this>
+                                </button>
+                            </div>
+
+                        </div>
+
+
+
+
+                        <div class="table-responsive">
+                            <table id="myTable" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Event</th>
+                                        <th>Exhibitor</th>
+                                        <th>Booth Number</th>
+                                        <th>Contact Person</th>
+                                        <th>Contact Email</th>
+                                        <th>Contact Phone</th>
+                                        <th>Username</th>
+                                        <th>Password</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for exe in exe reversed %}
+                                    <tr>
+                                        <td>{{exe.event}}</td>
+                                        <td class="text-uppercase">{{exe.exhibitors}}</td>
+                                        <td>{{exe.boothnumber}}</td>
+                                        <td>{{exe.contactperson}}</td>
+                                        <td>{{exe.contactemail}}</td>
+                                        <td>{{exe.contactnumber}}</td>
+                                        <td>{{exe.username}}</td>
+                                        <td>{{exe.password}}</td>
+
+                                        <td class="float-right">
+                                            <div class="btn-group" role="group" aria-label="Basic example">
+                                                <a href="{% url 'admin_view_exhibitors' exe.id %}">
+                                                    <button type="button" class="btn btn-outline-secondary btn-sm">
+                                                        <i class="typcn typcn-eye-outline"></i>
+                                                    </button>
+                                                </a>
+                                                <a>
+                                                    <button type="button" class="btn btn-outline-warning btn-sm"
+                                                        data-toggle="modal"
+                                                        data-target="#xexampleModalCenter{{exe.id}}">
+                                                        <i class="typcn typcn-pencil"></i>
+                                                    </button>
+                                                </a>
+                                                <a href="{% url 'delete_Exhibitors' exe.id %}">
+                                                    <button type="button" class="btn btn-outline-danger btn-sm">
+                                                        <i class="typcn typcn-trash"></i>
+                                                    </button>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+
+
+
+
+
+
+
+
+
+
+                                    <div class="modal fade" id="xexampleModalCenter{{exe.id}}" tabindex="-1"
+                                        role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLongTitle">Edit
+                                                        {{exe.exhibitors}} Details
+                                                    </h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+
+                                                <div class="modal-body">
+                                                    <form class="forms-sample" action="{% url 'Update_admin_exhibitors' exe.id %}"
+                                                        method="post" enctype="multipart/form-data" autocomplete="off">
+                                                        {% csrf_token %}
+                                                        <div class="form-group">
+                                                            <label for="exampleInputUsername1">Event</label>
+                                                            <select name="events" id="eventDropdown"
+                                                                class="form-control">
+                                                                <option value="{{exe.event.id}}" selected>{{exe.event.event}}
+                                                                </option>
+
+                                                                {% for ez in eve reversed %}
+                                                                <option value="{{ez.id}}">{{ez.event}}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                        
+
+                                                        <div class="row">
+                                                            <div class="col-9">
+                                                                <div class="form-group">
+                                                                    <label for="exampleInputUsername1">Exhibitors
+                                                                        Name</label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-sm"
+                                                                        id="exhibitors" value="{{exe.exhibitors}}"
+                                                                        autocomplete="off" required name="exhibitors">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-3">
+                                                                <div class="form-group">
+                                                                    <label for="exampleInputUsername1">BoothNo</label>
+                                                                    <input type="text"
+                                                                        class="form-control form-control-sm"
+                                                                        autocomplete="off" name="btno"
+                                                                        value="{{exe.boothnumber}}">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="exampleInputUsername1">Contact Person</label>
+                                                            <input type="text" class="form-control form-control-sm"
+                                                                id="c_person" autocomplete="off"
+                                                                value="{{exe.contactperson}}" required name="c_person">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="exampleInputUsername1">Contact Email</label>
+                                                            <input type="email" class="form-control form-control-sm"
+                                                                id="c_email" autocomplete="off"
+                                                                value="{{exe.contactemail}}" required name="c_email">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="exampleInputUsername1">Contact Number</label>
+                                                            <input type="number" class="form-control form-control-sm"
+                                                                id="c_number" autocomplete="off"
+                                                                value="{{exe.contactnumber}}" required name="c_number">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="exampleInputUsername1">Username
+                                                                (autocomplete)</label>
+                                                            <input type="text"
+                                                                class="form-control form-control-sm text-uppercase"
+                                                                id="c_username" value="{{exe.username}}" disabled
+                                                                autocomplete="off" required name="c_username">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="exampleInputUsername1">Password
+                                                                (autocomplete)</label>
+                                                            <input type="text" class="form-control form-control-sm"
+                                                                id="c_pass" autocomplete="off" required disabled
+                                                                value="{{exe.password}}" name="c_pass">
+                                                        </div>
+
+                                                        <input type="text" name="" id="countid" value="{{last_id}}"
+                                                            hidden>
+                                                </div>
+                                                <div class="modal-footer"><button type="submit"
+                                                        class="btn btn-primary">Save</button>
+                                                </div>
+                                                </form>
+
+
+
+
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                    {% endfor %}
+
+
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    document.getElementById('fullsearching').addEventListener('keyup', function () {
+        const searchValue = this.value.toLowerCase();
+        const tableRows = document.querySelectorAll('#myTable tr');
+        tableRows.forEach(row => {
+            if (row.children.length === 0) return;
+            const rowData = Array.from(row.children).map(cell => cell.textContent.toLowerCase());
+            const isMatch = rowData.some(data => data.includes(searchValue));
+            row.style.display = isMatch ? '' : 'none';
+        });
+    });
+</script>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Exhibitor Form</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="forms-sample" action="{% url 'admin_exhibitors' %}" method="post"
+                    enctype="multipart/form-data" autocomplete="off">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Event</label>
+                        <select name="event" id="" class="form-control">
+                            {% for e in eve reversed %}
+                            <option value="{{e.id}}">{{e.event}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-9">
+                            <div class="form-group">
+                                <label for="exampleInputUsername1">Exhibitors Name</label>
+                                <input type="text" class="form-control form-control-sm" id="exhibitors"
+                                    autocomplete="off" required name="exhibitors">
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="exampleInputUsername1">BoothNo</label>
+                                <input type="text" class="form-control form-control-sm" autocomplete="off" name="btno">
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- <div class="form-group">
+                        <label for="exampleInputUsername1">Exhibitors Name</label>
+                        <input type="text" class="form-control form-control-sm" id="exhibitors"
+                            autocomplete="off" required name="exhibitors">
+                    </div> -->
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Contact Person</label>
+                        <input type="text" class="form-control form-control-sm" id="c_person" autocomplete="off"
+                            required name="c_person">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Contact Email</label>
+                        <input type="email" class="form-control form-control-sm" id="c_email" autocomplete="off"
+                            required name="c_email">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Contact Number</label>
+                        <input type="number" class="form-control form-control-sm" id="c_number" autocomplete="off"
+                            required name="c_number">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Username (autocomplete)</label>
+                        <input type="text" class="form-control form-control-sm text-uppercase" id="c_username"
+                            autocomplete="off" required name="c_username">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Password (autocomplete)</label>
+                        <input type="text" class="form-control form-control-sm" id="c_pass" autocomplete="off" required
+                            name="c_pass">
+                    </div>
+
+                    <input type="text" name="" id="countid" value="{{last_id}}" hidden>
+            </div>
+            <div class="modal-footer"><button type="submit" class="btn btn-primary">Save</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const exhibitorsInput = document.getElementById('exhibitors');
+        const exhibitorsCopyInput = document.getElementById('c_username');
+        const countid = document.getElementById('countid').value;
+        exhibitorsInput.addEventListener('input', function () {
+            const firstThreeLetters = exhibitorsInput.value.slice(0, 3);
+            exhibitorsCopyInput.value = 'GCCE' + countid + '@' + firstThreeLetters;
+        });
+
+        const c_number = document.getElementById('c_number');
+        const c_pass = document.getElementById('c_pass');
+        const c_email = document.getElementById('c_email');
+
+        c_number.addEventListener('input', function () {
+            const firstThreeLetters = c_number.value.slice(-3);
+            const firstThreenumbers = c_email.value.slice(0, 4);
+            console.log(firstThreenumbers)
+            c_pass.value = firstThreenumbers + '@' + firstThreeLetters;
+        });
+    });
+</script>
+
+
+
+<script>
+    var mobnav = document.querySelector('.mob_exe');
+    var navLink = document.querySelector('.nav-exe');
+
+    mobnav.classList.add('active-link')
+    navLink.classList.add('active');
+</script>
+
+
+
+
+
+
+{% endblock %}

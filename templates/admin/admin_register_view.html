@@ -1,0 +1,70 @@
+{% extends 'admin/admin_navbar.html' %}
+{% block content %}
+{% load static %}
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+
+
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Registration Table</h4>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Reg.ID</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Mobile</th>
+                                        <th>Event</th>
+                                        <th</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {% for r in regs reversed %}
+                                    <tr>
+                                        <td>{{r.booking_ID}}</td>
+                                        <td>{{r.fullname}}</td>
+                                        <td>{{r.email}}</td>
+                                        <td>{{r.mobile}}</td>
+                                        <td>{{r.event}}</td>
+                                        <td>
+                                            <a href="{% url 'remove_regs' r.id %}">
+                                                <button type="button" class="btn btn-outline-danger btn-icon-text btn-sm">
+                                                    <i class="typcn typcn-trash btn-icon-prepend"></i>                                                    
+                                                    Remove
+                                                  </button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<script>
+    var mobnav = document.querySelector('.mob_reg');
+    var navLink = document.querySelector('.nav-reg');
+    navLink.classList.add('active');
+    mobnav.classList.add('active-link')
+</script>
+{% endblock %}

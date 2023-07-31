@@ -1,0 +1,196 @@
+{% extends 'Exhibitor/exhibitor_navbar.html' %}
+{% block content %}
+{% load static %}
+
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+<style>
+    /* Set the height for the table container */
+    .table-responsive {
+      height: 400px; /* Set the desired height here */
+      overflow-y: auto; /* Add vertical scrollbar if necessary */
+    }
+
+    /* Add your CSS styles for the table if needed */
+  </style>
+
+
+
+
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+
+            <div class="col-xl-5 d-flex grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-wrap justify-content-between">
+                            <h4 class="card-title mb-3">{{e.event.event}} - Exhibitor Details</h4>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="d-flex justify-content-between mb-4">
+                                            <div>Exhibitor</div>
+                                            <div class="text-dark">{{e.exhibitors}}</div>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-4">
+                                            <div>Booth Number</div>
+                                            <div class="text-dark">{{e.boothnumber}}</div>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-4">
+                                            <div>Contact Person</div>
+                                            <div class="text-dark">{{e.contactperson}}</div>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-4">
+                                            <div>Contact Email</div>
+                                            <div class="text-dark">{{e.contactemail}}</div>
+                                        </div>
+                                        <div class="d-flex justify-content-between ">
+                                            <div>Contact Number</div>
+                                            <div class="text-dark">{{e.contactnumber}}</div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+            
+
+
+
+
+
+            <div class="col-xl-3 d-flex grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-wrap justify-content-between">
+                            <h4 class="card-title mb-5">Credentials</h4>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-sm-12">
+
+                                        <div class="d-flex justify-content-between mb-4">
+                                            <div class="text-secondary font-weight-medium">Username</div>
+                                            <div class="small">{{e.username}}</div>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-4">
+                                            <div class="text-secondary font-weight-medium">Password</div>
+                                            <div class="small">{{e.password}}</div>
+                                        </div>
+
+                                        <div class="d-flex justify-content-between mb-3">
+                                            <div class="text-secondary font-weight-medium mt-2">Status</div>
+                                            <div class="small">
+
+                                                {% if e.status == '0' %}
+                                                <button type="button"
+                                                    class="btn btn-success btn-sm btn-rounded btn-fw">Active</button>
+                                                {% else %}
+                                                <button type="button"
+                                                    class="btn btn-danger btn-sm btn-rounded btn-fw">Deactivated</button>
+                                                {% endif %}
+
+
+                                            </div>
+                                        </div>
+
+                                        <!-- <div class="d-flex justify-content-between ">
+                                            <button type="button"
+                                                class="btn btn-outline-success btn-sm btn-rounded btn-fw">Edit</button>
+                                            <button type="button"
+                                                class="btn btn-outline-success btn-sm btn-rounded btn-fw">Decativate</button>
+                                            <button type="button"
+                                                class="btn btn-outline-success btn-sm btn-rounded btn-fw">Delete</button>
+                                        </div> -->
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+        
+
+
+
+
+
+
+
+    </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Function to load DataTable when DOM content is ready
+        function loadDataTable() {
+            const table = document.getElementById("myTable");
+            const dataTable = new DataTable(table, {
+                searchable: true, // Enable search functionality
+                paging: true, // Enable pagination
+            });
+        }
+
+        loadDataTable();
+    });
+</script>
+
+<!-- Add the DataTables library here (you can also host it locally) -->
+<script src="https://cdn.jsdelivr.net/npm/datatable@1.11.4/dist/index.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+    var mobnav = document.querySelector('.mob_set');
+    var navLink = document.querySelector('.nav-set');
+
+    mobnav.classList.add('active-link')
+    navLink.classList.add('active');
+</script>
+
+
+
+{% endblock %}

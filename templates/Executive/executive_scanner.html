@@ -1,0 +1,265 @@
+{% extends 'Executive/executive_navbar.html' %}
+{% block content %}
+{% load static %}
+<script src="../../static/assets/js/scannerjs.js"></script>
+
+
+
+
+<style>
+    #reader__dashboard_section_csr button {
+        background-color: red;
+        color: white;
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 5px 10px;
+        font-size: 16px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+
+    }
+
+    #reader__camera_selection {
+        display: block;
+        width: 100%;
+        max-width: 320px;
+        height: 30px;
+        float: right;
+        margin: 5px 0px;
+        padding: 0px 24px;
+        font-size: 16px;
+        line-height: 1.75;
+        color: #333;
+        background-color: #ffffff;
+        background-image: none;
+        border: 1px solid #cccccc;
+        border-radius: 5px;
+        -ms-word-break: normal;
+        word-break: normal;
+    }
+
+    #reader__scan_region img {
+        width: 50%;
+    }
+</style>
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+
+            <input type="text" name="" id="exeID" value="{{ex.id}}" hidden >
+
+            <div class="col-xl-5" style="height: 100%;">
+                <div class="card" style="height: 100%;">
+                    <div class="col" id="reader"></div>
+                </div>
+            </div>
+
+            <!-- 
+            <div class="col-xl-5" style="height: 100%;">
+                <div class="card" style="height: 100%;">
+
+
+                    <div id="result"></div>
+                </div>
+            </div> -->
+
+
+            <div class="col-xl-5 mt-2">
+                <div id="myModal" style="display: none;">
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                            ×</button>
+                        <span class="glyphicon glyphicon-hand-right"></span> <strong>Already Scanned in Entrence</strong>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-5 mt-2">
+                <div id="myModal2" style="display: none;">
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                            ×</button>
+                        <span class="glyphicon glyphicon-hand-right"></span> <strong>Invalid QR Code !!!!!</strong>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-5 mt-2">
+                <div id="myModal3" style="display: none;">
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                            ×</button>
+                        <span class="glyphicon glyphicon-hand-right"></span> <strong>The Event is Not Currect</strong>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="col-xl-5 mt-4">
+                <div class="card" id="namecard" style="display: none;">
+                    <div class="card-body">
+                        <blockquote class="blockquote blockquote-primary">
+                            <p>Visitor Name :</p>
+                            <footer class="blockquote-footer"></footer>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+            <!-- <div class="row">
+                <div class="col">
+                    <div style="width:500px;" id="reader"></div>
+                </div>
+                <div class="col" style="padding:30px;">
+                    <h4>SCAN RESULT</h4>
+                    <div id="result">Result Here</div>
+                </div>
+            </div> -->
+
+
+
+
+
+
+
+
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+            <script type="text/javascript">
+                function onScanSuccess(qrCodeMessage) {
+                    console.log(qrCodeMessage)
+                    // document.getElementById('result').innerHTML = '<span class="result">' + qrCodeMessage + '</span>';
+
+                    var exid = document.getElementById("exeID").value;
+                    var data = {
+                        'QrCode': qrCodeMessage,
+                        'ExeID': exid
+
+                    };
+                    $.ajax({
+                        url: "{% url 'entrance_qrscan' %}",
+                        type: 'POST',
+                        data: data,
+                        beforeSend: function (xhr, settings) {
+                            xhr.setRequestHeader("X-CSRFToken", getCSRFToken());
+                        },
+                        success: function (response) {
+                            console.log(response);
+                            if (response.status === 'success') {
+                                var modal1 = document.getElementById('namecard');
+                                modal1.style.display = 'block';
+                                const visitorName = response.visitorname;
+                                console.log('Full Name:', visitorName);
+                                const footerElement = document.querySelector('.blockquote-footer');
+                                footerElement.textContent = visitorName;
+
+
+                                setTimeout(function () {
+                            modal1.style.display = 'none';
+                        }, 2500);
+
+
+
+
+                            } else if (response.status === 'error') {
+                                showModal2();
+                            } else if (response.status === 'exist') {
+                                showModal();
+                            }else if (response.status === 'eventerror') {
+                                showModal3()
+                            }
+                        },
+                        error: function (xhr, status, error) {
+
+                        }
+                    });
+                    function getCSRFToken() {
+                        const cookieValue = document.cookie
+                            .split('; ')
+                            .find(row => row.startsWith('csrftoken='))
+                            .split('=')[1];
+                        return cookieValue;
+                    }
+                    function showModal() {
+                        var modal = document.getElementById('myModal');
+                        modal.style.display = 'block';
+                        setTimeout(function () {
+                            modal.style.display = 'none';
+                        }, 2500);
+                    }
+                    function showModal2() {
+                        var modal2 = document.getElementById('myModal2');
+                        modal2.style.display = 'block';
+                        setTimeout(function () {
+                            modal2.style.display = 'none';
+                        }, 2500);
+                    }
+                    function showModal3() {
+                        var modal3 = document.getElementById('myModal3');
+                        modal3.style.display = 'block';
+                        setTimeout(function () {
+                            modal3.style.display = 'none';
+                        }, 2500);
+                    }
+
+
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                function onScanError(errorMessage) {
+                    //handle scan error
+                }
+                var html5QrcodeScanner = new Html5QrcodeScanner(
+                    "reader", { fps: 10, qrbox: 250 });
+                html5QrcodeScanner.render(onScanSuccess, onScanError);
+            </script>
+
+
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var mobnav = document.querySelector('.mob_qr');
+    var navLink = document.querySelector('.nav-qr');
+
+    mobnav.classList.add('active-link')
+    navLink.classList.add('active');
+</script>
+
+
+
+{% endblock %}

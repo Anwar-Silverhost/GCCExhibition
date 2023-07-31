@@ -1,0 +1,200 @@
+{% extends 'admin/admin_navbar.html' %}
+{% block content %}
+{% load static %}
+<div class="main-panel">
+    <div class="content-wrapper">
+
+
+
+
+        <div class="row">
+
+
+            <div class="col-xl-3 d-flex grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-wrap justify-content-between">
+                            <h4 class="card-title mb-3">Registrations</h4>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="">
+                                    <div class="mr-1">
+                                        <div class="text-info mb-1">
+                                            Total Registrations
+                                        </div>
+                                        <h2 class="mb-2 mt-2 font-weight-bold">{{regs}}</h2>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 d-flex grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-wrap justify-content-between">
+                            <h4 class="card-title mb-3">Exhibitors Account</h4>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="">
+                                    <div class="mr-1">
+                                        <div class="text-info mb-1">
+                                            Total Exhibitors
+                                        </div>
+                                        <h2 class="mb-2 mt-2 font-weight-bold">{{exhib}}</h2>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 d-flex grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-wrap justify-content-between">
+                            <h4 class="card-title mb-3">Entrance Executive Account</h4>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="">
+                                    <div class="mr-1">
+                                        <div class="text-info mb-1">
+                                            Total Entrance Executives
+                                        </div>
+                                        <h2 class="mb-2 mt-2 font-weight-bold">{{execut}}</h2>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 d-flex grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-wrap justify-content-between">
+                            <h4 class="card-title mb-3">Events</h4>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="">
+                                    <div class="mr-1">
+                                        <div class="text-info mb-1">
+                                            Total Events
+                                        </div>
+                                        <h2 class="mb-2 mt-2 font-weight-bold">{{events}}</h2>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+
+                    <div class="card-body">
+                        <button class="btn btn-sm btn-outline-secondary">
+                            Latest Upcoming Event
+                        </button>
+
+
+
+
+
+                        <div class="row mt-4 align-items-center">
+                            <div class="col-12">
+                                <h3 class="h1">{{latest_event.event}} - <span
+                                        class="text-primary">{{latest_event.from_date}}</span></h3>
+
+                                <div class="mt-3">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="d-flex">
+                                                            <div >
+                                                                <div>Total Registrations</div>
+                                                                <div class="font-weight-bold mt-2 text-success">{{latest_studen}}</div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        Exhibitors
+                                                        <div class="font-weight-bold text-success  mt-2">{{latest_exhi}}</div>
+                                                    </td>
+                                                    <td>
+                                                        Executives
+                                                        <div class="font-weight-bold text-success  mt-2">{{latest_exec}}</div>
+                                                    </td>
+                                                    <!-- <td>
+                                                        Deadline
+                                                        <div class="font-weight-bold  mt-1">07 Nov 2019</div>
+                                                    </td> -->
+                                                    <!-- <td>
+                                                <button type="button" class="btn btn-sm btn-secondary">edit actions</button>
+                                              </td> -->
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        
+    </div>
+    <!-- content-wrapper ends -->
+    <!-- partial:partials/_footer.html -->
+
+    <!-- partial -->
+</div>
+
+
+
+
+<script>
+    var mobnav = document.querySelector('.mob_nav');
+    var navLink = document.querySelector('.nav-dash');
+
+    mobnav.classList.add('active-link')
+    navLink.classList.add('active');
+</script>
+
+
+
+
+
+
+{% endblock %}

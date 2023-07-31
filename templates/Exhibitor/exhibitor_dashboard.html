@@ -1,0 +1,402 @@
+{% extends 'Exhibitor/exhibitor_navbar.html' %}
+{% block content %}
+{% load static %}
+
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.10.2/jspdf.umd.min.js"></script>
+
+<style>
+    /* Set the height for the table container */
+    .table-responsive {
+        height: 400px;
+        /* Set the desired height here */
+        overflow-y: auto;
+        /* Add vertical scrollbar if necessary */
+    }
+
+    /* Add your CSS styles for the table if needed */
+</style>
+
+
+
+
+<div class="main-panel">
+    <div class="content-wrapper">
+
+        <div class="row">
+            <div class="col-lg-3 d-flex grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="">
+                            <div class="d-flex justify-content-between">
+                                <span class="fs-2">Students ({{total_std}})</span>
+                                <span id="student_count"></span>
+                            </div>
+                            <div class="progress progress-md  mt-2">
+                                <div class="progress-bar bg-secondary" role="progressbar" style="width: 0%" id="std_pro"
+                                    aria-valuenow="90" aria-valuemin="0" aria-valuemax="{{total_std}}">
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 d-flex grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="">
+                            <div class="d-flex justify-content-between">
+                                <span id="total_parents">Parents ({{total_par}})</span>
+                                <span id="parents_count"></span>
+                            </div>
+                            <div class="progress progress-md  mt-2">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 0%" id="pare_pro"
+                                    aria-valuenow="90" aria-valuemin="0" aria-valuemax="{{total_par}}"></div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 d-flex grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="">
+                            <div class="d-flex justify-content-between">
+                                <span>Academic ({{total_aca}})</span>
+                                <span id="academic_count"></span>
+                            </div>
+                            <div class="progress progress-md mt-2">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 0%" id="ace_pro"
+                                    aria-valuenow="90" aria-valuemin="0" aria-valuemax="{{total_aca}}"></div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 d-flex grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="">
+                            <div class="d-flex justify-content-between">
+                                <span>Schools ({{total_school}})</span>
+                                <span id="school_count"></span>
+                            </div>
+                            <div class="progress progress-md mt-2">
+                                <div class="progress-bar bg-info" role="progressbar" style="width: 0%" id="shl_pro"
+                                    aria-valuenow="90" aria-valuemin="0" aria-valuemax="{{total_school}}"></div>
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+
+
+
+        <div class="row">
+
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Booth Visitors</h4>
+
+                        <div class="table-responsive" style="height: 420px;">
+                            <table id="myTable" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Booking ID
+                                        </th>
+                                        <th>
+                                            Name
+                                        </th>
+                                        <th>
+                                            Type
+                                        </th>
+                                        <th>
+                                            Email
+                                        </th>
+                                        <th>
+                                            Date & Time
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for bv in boothvisitorss reversed %}
+                                    <tr>
+                                        <td>{{bv.visitor.booking_ID}}</td>
+                                        <td>{{bv.visitor.fullname}}</td>
+
+                                        {% if bv.visitor.who == '' %}
+                                        <td>School</td>
+                                        {% elif bv.visitor.who == 'Student' %}
+                                        <td>Student</td>
+                                        {% elif bv.visitor.who == 'Parent' %}
+                                        <td>Parent</td>
+                                        {% elif bv.visitor.who == 'Academic' %}
+                                        <td>Academic</td>
+                                        {% endif %}
+                                        <td>{{bv.visitor.email}}</td>
+                                        <td>{{bv.visited_DT}} </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+
+
+
+
+    </div>
+
+
+</div>
+
+<script>
+    function updateProgressBar(elementId, passcount) {
+        const element = document.getElementById(elementId);
+        const maxValue = parseInt(element.getAttribute("aria-valuemax"));
+        const percentage = (passcount / maxValue) * 100;
+        element.style.width = percentage + "%";
+    }
+
+    function countByType() {
+        const types = {
+            'School': 0,
+            'Parent': 0,
+            'Academic': 0,
+            'Student': 0
+        };
+
+        const table = document.getElementById('myTable');
+        const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+        for (let i = 0; i < rows.length; i++) {
+            const typeCell = rows[i].getElementsByTagName('td')[2];
+            const type = typeCell.innerText.trim();
+            if (types.hasOwnProperty(type)) {
+                types[type]++;
+            }
+        }
+
+        return types;
+    }
+
+    function updateTypeCountAndProgress(type, countElementId, progressElementId) {
+        const counts = countByType();
+        const countElement = document.getElementById(countElementId);
+        const progressElement = document.getElementById(progressElementId);
+
+        countElement.innerText = counts[type].toString();
+        updateProgressBar(progressElementId, counts[type]);
+    }
+
+    function logCountsToConsole() {
+        updateTypeCountAndProgress('Parent', 'parents_count', 'pare_pro');
+        updateTypeCountAndProgress('School', 'school_count', 'shl_pro');
+        updateTypeCountAndProgress('Academic', 'academic_count', 'ace_pro');
+        updateTypeCountAndProgress('Student', 'student_count', 'std_pro');
+    }
+
+    window.onload = function () {
+        logCountsToConsole();
+    };
+</script>
+
+
+<script>
+    $(document).ready(function() {
+        // Initialize DataTables
+        $('#myTable').DataTable();
+
+        // Add Export buttons using DataTables Buttons extension
+        var table = $('#myTable').DataTable({
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+        });
+
+        // Optionally, add a custom button for PDF export using jsPDF
+        table.buttons().container().appendTo( '#myTable_wrapper .col-md-6:eq(0)' );
+        $('#pdfExport').on('click', function() {
+            var doc = new jsPDF();
+            doc.autoTable({
+                html: '#myTable',
+                theme: 'striped',
+                styles: { overflow: 'linebreak' },
+                margin: { top: 10, left: 10, right: 10, bottom: 10 },
+            });
+            doc.save('table_export.pdf');
+        });
+    });
+</script>
+
+
+
+
+
+<!-- <script>
+    function StudentProgres(std_passcount) {
+        var std_pro = document.getElementById("std_pro").getAttribute("aria-valuemax");
+        const std_percentage = (std_passcount / std_pro) * 100;
+        document.getElementById("std_pro").style.width = std_percentage + "%";
+    }
+</script>
+
+<script>
+    function ParentProgres(pare_passcount) {
+        var pare_pro = document.getElementById("pare_pro").getAttribute("aria-valuemax");
+        const pare_percentage = (pare_passcount / pare_pro) * 100;
+        document.getElementById("pare_pro").style.width = pare_percentage + "%";
+    }
+</script>
+
+<script>
+    function AcademinProgres(acad_passcount) {
+        var ace_pro = document.getElementById("ace_pro").getAttribute("aria-valuemax");
+        const ace_percentage = (acad_passcount / ace_pro) * 100;
+        document.getElementById("ace_pro").style.width = ace_percentage + "%";
+    }
+</script>
+<script>
+    function SchoolProgres(schl_passcount) {
+        var shl_pro = document.getElementById("shl_pro").getAttribute("aria-valuemax");
+        const scl_percentage = (schl_passcount / shl_pro) * 100;
+        document.getElementById("shl_pro").style.width = scl_percentage + "%";
+    }
+</script>
+
+<script>
+    function countByType() {
+        let types = {
+            'School': 0,
+            'Parent': 0,
+            'Academic': 0,
+            'Student': 0
+        };
+
+        const table = document.getElementById('myTable');
+        const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+        for (let i = 0; i < rows.length; i++) {
+            const typeCell = rows[i].getElementsByTagName('td')[2];
+            const type = typeCell.innerText.trim();
+            if (types.hasOwnProperty(type)) {
+                types[type]++;
+            }
+        }
+
+        return types;
+    }
+
+    function logCountsToConsole() {
+        const counts = countByType();
+        const parentsCountElement = document.getElementById('parents_count');
+        parentsCountElement.innerText = counts['Parent'].toString();
+        const pare_passcount = counts['Parent']
+        ParentProgres(pare_passcount);
+        const school_count = document.getElementById('school_count');
+        school_count.innerText = counts['School'].toString();
+        const schl_passcount = counts['School']
+        SchoolProgres(schl_passcount)
+        const academic_count = document.getElementById('academic_count');
+        academic_count.innerText = counts['Academic'].toString();
+        const acad_passcount = counts['Academic']
+        AcademinProgres(acad_passcount)
+        const student_count = document.getElementById('student_count');
+        student_count.innerText = counts['Student'].toString();
+        const std_passcount = counts['Student']
+        StudentProgres(std_passcount);
+    }
+    window.onload = function () {
+        logCountsToConsole();
+    };
+</script> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Function to load DataTable when DOM content is ready
+        function loadDataTable() {
+            const table = document.getElementById("myTable");
+            const dataTable = new DataTable(table, {
+                searchable: true, // Enable search functionality
+                paging: true, // Enable pagination
+            });
+        }
+
+        loadDataTable();
+    });
+</script>
+
+<!-- Add the DataTables library here (you can also host it locally) -->
+<script src="https://cdn.jsdelivr.net/npm/datatable@1.11.4/dist/index.js"></script>
+
+
+
+
+
+
+
+
+
+<script>
+    var mobnav = document.querySelector('.mob_nav');
+    var navLink = document.querySelector('.nav-dash');
+
+    mobnav.classList.add('active-link')
+    navLink.classList.add('active');
+</script>
+
+
+
+{% endblock %}
